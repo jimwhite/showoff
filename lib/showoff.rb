@@ -424,10 +424,22 @@ class ShowOff < Sinatra::Application
      e.message
    end
 
+   def eval_groovy code
+     %x(groovy -e "#{code}")
+   rescue => e
+     e.message
+   end
+
   get '/eval_ruby' do
     return eval_ruby(params[:code]) if ENV['SHOWOFF_EVAL_RUBY']
 
     return "Ruby Evaluation is off. To turn it on set ENV['SHOWOFF_EVAL_RUBY']"
+  end
+
+  get '/eval_groovy' do
+    return eval_groovy(params[:code]) if ENV['SHOWOFF_EVAL_RUBY']
+
+    return "Evaluation is off. To turn it on set ENV['SHOWOFF_EVAL_RUBY']"
   end
 
   get %r{(?:image|file)/(.*)} do

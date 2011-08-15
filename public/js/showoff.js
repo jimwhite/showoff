@@ -336,15 +336,20 @@ function keyDown(event)
 			showSlide(true);
 			gotoSlidenum = 0;
 		} else {
-			debug('executeCode');
-            var $jsCode = $('.execute .sh_javascript code:visible')
-            if ($jsCode.length > 0) {
-                executeCode.call($jsCode);
-            } 
-            var $rubyCode = $('.execute .sh_ruby code:visible')
-            if ($rubyCode.length > 0) {
-                executeRuby.call($rubyCode);
-            }
+		   debug('executeCode');
+               var $jsCode = $('.execute .sh_javascript code:visible')
+               if ($jsCode.length > 0) {
+                  executeCode.call($jsCode);
+              } 
+              var $rubyCode = $('.execute .sh_ruby code:visible')
+              if ($rubyCode.length > 0) {
+                 executeRuby.call($rubyCode);
+              }
+              var $groovyCode = $('.execute .sh_groovy code:visible')
+              if ($groovyCode.length > 0) {
+		     executeGroovy.call($groovyCode);
+              }
+
 		}
 
 	}
@@ -506,7 +511,17 @@ function executeRuby () {
         codeDiv.removeClass("executing");
     });
 }
+
+function executeGroovy() {
+	var codeDiv = $(this);
+	codeDiv.addClass("executing");
+    $.get('/eval_groovy', {code: codeDiv.text()}, function(result) {
+        if (result != null) print(result);
+        codeDiv.removeClass("executing");
+    });
+}
 $('.execute .sh_ruby code').live("click", executeRuby);
+$('.execute .sh_groovy code').live("click", executeGroovy);
 
 
 /********************

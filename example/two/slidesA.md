@@ -29,8 +29,10 @@
 
 # Executable Ruby #
 
-	@@@ ruby
-	result = [1, 2, 3].map { |n| n*7 }
+ 	@@@groovy
+       result = [1,2].collect{it*2}
+       println result
+
 
 !SLIDE
 
