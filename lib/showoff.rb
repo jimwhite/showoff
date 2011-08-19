@@ -4,6 +4,7 @@ require 'json'
 require 'nokogiri'
 require 'fileutils'
 require 'logger'
+require 'open3'
 
 here = File.expand_path(File.dirname(__FILE__))
 require "#{here}/showoff_utils"
@@ -425,9 +426,11 @@ class ShowOff < Sinatra::Application
    end
 
    def eval_groovy code
-     %x(groovy -e "#{code}")
+     stdin, stdout, stderr = Open3.popen3("/opt/groovyserv-0.9/bin/groovyclient -e '#{code}'")  
+     res = stdout.gets
+     res ? res : stderr.gets
    rescue => e
-     e.message
+        e.message
    end
 
   get '/eval_ruby' do
