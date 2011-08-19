@@ -32,6 +32,7 @@
  	@@@groovy
        result = [1,2].collect{it*2}
        println result
+       println 'bla'
 
 
 !SLIDE
