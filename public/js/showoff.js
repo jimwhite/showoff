@@ -488,7 +488,7 @@ var removeResults = function() {
 
 var print = function(text) {
     removeResults();
-    var html = $.print(text, {max_string:1500}).replace(/\\n/g,'</br>')
+    var html = $.print(text, {max_string:2500}).replace(/\\n/g,'</br>')
     var _results = $('<div>').addClass('results').html(html);
     $('body').append(_results);
     _results.click(removeResults);
