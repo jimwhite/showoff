@@ -428,8 +428,8 @@ class ShowOff < Sinatra::Application
     def eval_groovy code
 	  stdin, stdout, stderr = Open3.popen3("/opt/groovyserv-0.9/bin/groovyclient -e '#{code}'")  
 	  
-	  res = stdout.readlines.join('<br>')
-	  res && !res.empty? ? res : stderr.readlines.join('<br>')
+	  res = stdout.readlines.join()
+	  res && !res.empty? ? res : stderr.readlines.join()
     rescue => e
 	  e.message
     end

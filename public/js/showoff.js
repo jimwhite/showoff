@@ -517,7 +517,8 @@ function executeGroovy() {
 	var codeDiv = $(this);
 	codeDiv.addClass("executing");
     $.get('/eval_groovy', {code: codeDiv.text()}, function(result) {
-        if (result != null) print(result);
+	  html = result.replace(/\</g,"&lt").replace(/\>/g,"&gt").replace(/\n/g,"<br>");
+        if (result != null) print(html);
         codeDiv.removeClass("executing");
     });
 }
