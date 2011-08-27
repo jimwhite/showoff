@@ -426,7 +426,7 @@ class ShowOff < Sinatra::Application
     end
 
     def eval_groovy code
-	  stdin, stdout, stderr = Open3.popen3("/opt/groovyserv-0.9/bin/groovyclient -e '#{code}'")  
+	  stdin, stdout, stderr = Open3.popen3("/opt/groovyserv-0.9/bin/groovyclient -cp classes -e '#{code}'")  
 	  
 	  res = stdout.readlines.join()
 	  res && !res.empty? ? res : stderr.readlines.join()
