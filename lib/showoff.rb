@@ -4,6 +4,7 @@ require 'json'
 require 'nokogiri'
 require 'fileutils'
 require 'logger'
+require 'open3'
 
 here = File.expand_path(File.dirname(__FILE__))
 require "#{here}/showoff_utils"
@@ -463,11 +464,28 @@ class ShowOff < Sinatra::Application
      e.message
    end
 
+  def eval_groovy code
+      stdin, stdout, stderr = Open3.popen3("/opt/groovyserv-0.9/bin/groovyclient -cp classes -e '#{code}'")
+
+      res = stdout.readlines.join()
+      res && !res.empty? ? res : stderr.readlines.join()
+  rescue => e
+     e.message
+  end
+
+
   get '/eval_ruby' do
     return eval_ruby(params[:code]) if ENV['SHOWOFF_EVAL_RUBY']
 
     return "Ruby Evaluation is off. To turn it on set ENV['SHOWOFF_EVAL_RUBY']"
   end
+
+
+  get '/eval_groovy' do
+    return eval_groovy(params[:code]) if ENV['SHOWOFF_EVAL_RUBY']
+
+    return "Evaluation is off. To turn it on set ENV['SHOWOFF_EVAL_RUBY']"
+  end 
 
   get %r{(?:image|file)/(.*)} do
     path = params[:captures].first
