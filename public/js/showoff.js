@@ -338,6 +338,10 @@ function executeAnyCode()
 	executeGroovy.call($groovyCode);
   }
 
+  var $clojureCode = $('.execute .sh_clojure code:visible')
+  if ($clojureCode.length > 0) {
+	executeClojure.call($clojureCode);
+  }
 }
 
 function debug(data)
@@ -541,8 +545,19 @@ function executeGroovy() {
         codeDiv.removeClass("executing");
     });
 }
+
+function executeClojure() {
+	var codeDiv = $(this);
+	codeDiv.addClass("executing");
+    $.get('/eval_clojure', {code: codeDiv.text()}, function(result) {
+        if (result != null) print(result);
+        codeDiv.removeClass("executing");
+    });
+}
+
 $('.execute .sh_ruby code').live("click", executeRuby);
 $('.execute .sh_groovy code').live("click", executeGroovy);
+$('.execute .sh_clojure code').live("click", executeClojure);
 
 function executeCoffee() {
 	result = null;
