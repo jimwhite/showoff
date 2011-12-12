@@ -20,7 +20,7 @@ doc
 pkg
 *.gem
 .bundle
-Gemfile.lock
+# Gemfile.lock
 
 ## PROJECT::SPECIFIC
 dist
