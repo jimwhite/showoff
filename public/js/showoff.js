@@ -430,6 +430,16 @@ function executeAnyCode()
   if ($coffeeCode.length > 0) {
       executeCoffee.call($coffeeCode);
   } 
+
+  var $groovyCode = $('.execute .sh_groovy code:visible')
+  if ($groovyCode.length > 0) {
+	executeGroovy.call($groovyCode);
+  }
+
+  var $clojureCode = $('.execute .sh_clojure code:visible')
+  if ($clojureCode.length > 0) {
+	executeClojure.call($clojureCode);
+  }
 }
 
 function debug(data)
@@ -463,8 +473,8 @@ function keyDown(event)
 			showSlide(true);
 			gotoSlidenum = 0;
 		} else {
-			debug('executeCode');
-			executeAnyCode();
+		   debug('executeCode');
+		   executeAnyCode();
 		}
 	}
 
@@ -622,10 +632,11 @@ var removeResults = function() {
 };
 
 var print = function(text) {
-	removeResults();
-	var _results = $('<div>').addClass('results').html($.print(text, {max_string:500}));
-	$('body').append(_results);
-	_results.click(removeResults);
+    removeResults();
+    var html = $.print(text, {max_string:2500}).replace(/\\n/g,'</br>')
+    var _results = $('<div>').addClass('results').html(html);
+    $('body').append(_results);
+    _results.click(removeResults);
 };
 
 function executeCode () {
@@ -646,7 +657,29 @@ function executeRuby () {
         codeDiv.removeClass("executing");
     });
 }
+
+function executeGroovy() {
+	var codeDiv = $(this);
+	codeDiv.addClass("executing");
+    $.get('/eval_groovy', {code: codeDiv.text()}, function(result) {
+	  html = result.replace(/\</g,"&lt").replace(/\>/g,"&gt").replace(/\n/g,"<br>");
+        if (result != null) print(html);
+        codeDiv.removeClass("executing");
+    });
+}
+
+function executeClojure() {
+	var codeDiv = $(this);
+	codeDiv.addClass("executing");
+    $.get('/eval_clojure', {code: codeDiv.text()}, function(result) {
+        if (result != null) print(result);
+        codeDiv.removeClass("executing");
+    });
+}
+
 $('.execute .sh_ruby code').live("click", executeRuby);
+$('.execute .sh_groovy code').live("click", executeGroovy);
+$('.execute .sh_clojure code').live("click", executeClojure);
 
 function executeCoffee() {
 	result = null;
