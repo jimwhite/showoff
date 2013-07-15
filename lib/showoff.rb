@@ -730,9 +730,11 @@ class ShowOff < Sinatra::Application
       password = settings.showoff_config['password']
       auth.provided? && auth.basic? && auth.credentials && auth.credentials == [user, password]
     end
-
+  end
+  
   def eval_groovy code
-      stdin, stdout, stderr = Open3.popen3("/opt/groovyserv-0.9/bin/groovyclient -cp classes -e '#{code}'")
+#      stdin, stdout, stderr = Open3.popen3("/opt/groovyserv-0.12/bin/groovyclient -cp classes -e '#{code}'")
+      stdin, stdout, stderr = Open3.popen3("/usr/local/Cellar/groovyserv/0.12/bin/groovyclient -cp classes -e '#{code}'")
       res = stdout.readlines.join()
       res && !res.empty? ? res : stderr.readlines.join()
   rescue => e
