@@ -39,13 +39,11 @@
 
 !SLIDE execute
 
-# Executable Ruby #
+# Executable Groovy #
 
- 	@@@groovy
-       result = [1,2].collect{it*2}
-       println result
-       println 'bla'
-
+	@@@groovy
+	result = (0..4).collect{[it*2, 2**it]}.transpose()
+	println result
 
 !SLIDE execute
 # Executable Coffeescript #
